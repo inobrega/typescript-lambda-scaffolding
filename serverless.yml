@@ -7,7 +7,7 @@ provider:
 
 functions:
   minhaFuncao:
-    handler: dist/handler.handler
+    handler: src/infrastructure/lambda/handler.handler
     events:
       - http:
           path: /

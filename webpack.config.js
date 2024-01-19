@@ -1,9 +1,12 @@
 const path = require('path');
+const slsw = require('serverless-webpack');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-  mode: 'production',
-  entry: './src/infrastructure/lambda/handler.ts',
+  entry: slsw.lib.entries,
   target: 'node',
+  mode: process.env.NODE_ENV || 'production',
+  externals: [nodeExternals()],
   module: {
     rules: [
       {
@@ -15,9 +18,13 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
+    alias: {
+      '@/app/': path.resolve(__dirname, './')
+    }
   },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
+    libraryTarget: 'commonjs2',
   },
 };

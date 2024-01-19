@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "serverless invoke local --function typescript-lambda-scaffolding",
-    "build": "serverless package --package ./packaged",
+    "build": "serverless webpack",
+    "build:package": "serverless package --package ./packaged",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix"
   },
@@ -44,6 +45,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0"
   }
 }

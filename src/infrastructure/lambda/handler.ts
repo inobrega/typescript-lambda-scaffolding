@@ -1,6 +1,5 @@
 import middy from '@middy/core';
 import jsonBodyParser from '@middy/http-json-body-parser';
-import httpErrorHandler from '@middy/http-error-handler';
 import { APIGatewayProxyEvent, APIGatewayProxyHandler } from 'aws-lambda';
 import setupDependencies from '@/app/src/shared/utilities/dependencyInjector';
 import { routeRequest } from './router';
