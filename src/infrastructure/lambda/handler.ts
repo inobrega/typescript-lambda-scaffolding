@@ -1,22 +1,31 @@
 import middy from '@middy/core';
 import jsonBodyParser from '@middy/http-json-body-parser';
 import httpErrorHandler from '@middy/http-error-handler';
-import { APIGatewayProxyHandler } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyHandler } from 'aws-lambda';
 import setupDependencies from '@/app/src/shared/utilities/dependencyInjector';
 import { routeRequest } from './router';
 import { dynamicValidator } from '@/app/src/infrastructure/middleware/dynamicValidatorMiddleware';
 import logger from '@/app/src/shared/utilities/logger';
+import { Container } from 'typedi';
+import { ConfigService } from '@/app/src/shared/services/ConfigService';
+import errorHandlingMiddleware from '@/app/src/shared/middleware/errorHandling';
 
 setupDependencies();
 
-const baseHandler: APIGatewayProxyHandler = async (event) => {
+const setTenant = (event: APIGatewayProxyEvent): void => {
+  const tenant = event.requestContext.authorizer?.claims['custom:tenant'];
+  Container.get(ConfigService).set('tenant', tenant);
+};
+
+const baseHandler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent) => {
   logger.info('Handler invoked', { path: event.path, method: event.httpMethod });
+  setTenant(event);
   return routeRequest(event);
 };
 
 const handler = middy(baseHandler)
   .use(jsonBodyParser())
-  .use(httpErrorHandler())
+  .use(errorHandlingMiddleware)
   .use(dynamicValidator(baseHandler));
 
 export { handler };

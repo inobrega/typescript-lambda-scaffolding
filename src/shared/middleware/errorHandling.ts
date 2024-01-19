@@ -1,13 +1,18 @@
-import { MiddlewareObj } from '@middy/core';
+import { MiddlewareObj, Request } from '@middy/core';
+import logger from '@/app/src/shared/utilities/logger';
+import UserNotFoundException from '@/app/src/shared/exceptions/UserNotFoundException';
 
-const errorHandlingMiddleware: { onError: (handler, next) => MiddlewareObj } = {
-  onError: (handler, next) => {
-    console.error(handler.error); // Log do erro para debugging
-    handler.response = {
-      statusCode: handler.error.statusCode || 500,
-      body: JSON.stringify({ message: handler.error.message || 'Erro interno do servidor' })
-    };
-    return next();
+const errorHandlingMiddleware: MiddlewareObj = {
+  onError: (request: Request) => {
+    const { error, response } = request;
+
+    if (error instanceof UserNotFoundException) {
+      response.statusCode = 404;
+      logger.error('UserService error: UserNotFoundException', error);
+    } else {
+      response.statusCode = 500;
+    }
+    response.body = JSON.stringify({ message: error.message || 'Erro interno do servidor' });
   }
 };
 

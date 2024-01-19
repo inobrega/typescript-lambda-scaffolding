@@ -34,10 +34,6 @@ app/
 │   │   ├── db/
 │   │   │   └── UserRepository.ts   # Implementação do repositório com Mongoose
 │   │   │
-│   │   ├── webserver/
-│   │   │   ├── server.ts           # Configuração do servidor
-│   │   │   └── routes.ts           # Rotas do servidor
-│   │   │
 │   │   └── lambda/
 │   │       └── handler.ts          # Adaptador para AWS Lambda
 │   │

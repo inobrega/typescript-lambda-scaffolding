@@ -1,6 +1,7 @@
 import { User } from '../entities/User';
 import { IUserRepository } from '../interfaces/IUserRepository';
 import logger from '@/app/src/shared/utilities/logger';
+import UserNotFoundException from '@/app/src/shared/exceptions/UserNotFoundException';
 
 class UserService {
   private userRepository: IUserRepository;
@@ -26,11 +27,11 @@ class UserService {
   }
 
   async getUserById(id: string): Promise<User | null> {
-    try {
-      return this.userRepository.findById(id);
-    } catch (err) {
-      logger.error('UserService error: findById', err);
+    const user = this.userRepository.findById(id);
+    if (!user) {
+      throw new UserNotFoundException(`Usuário com ID ${id} não encontrado`);
     }
+    return user;
   }
 
   async updateUser(id: string, user: User): Promise<User | null> {
