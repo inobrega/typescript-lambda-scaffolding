@@ -1,11 +1,9 @@
 import { IUserService } from '../interfaces/IUserService';
+import { Inject } from 'typedi';
 
 class GetUser {
+  @Inject('USER_SERVICE')
   private userService: IUserService;
-
-  constructor(userService: IUserService) {
-    this.userService = userService;
-  }
 
   async byEmail(email: string) {
     return this.userService.getUserByEmail(email);

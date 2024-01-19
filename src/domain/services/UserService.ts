@@ -1,14 +1,13 @@
 import { User } from '../entities/User';
-import { IUserRepository } from '../interfaces/IUserRepository';
+import { IUserRepository } from '@/app/src/domain/interfaces/IUserRepository';
 import logger from '@/app/src/shared/utilities/logger';
 import UserNotFoundException from '@/app/src/shared/exceptions/UserNotFoundException';
+import { Inject, Service } from 'typedi';
 
+@Service()
 class UserService {
+  @Inject('USER_REPOSITORY')
   private userRepository: IUserRepository;
-
-  constructor(userRepository: IUserRepository) {
-    this.userRepository = userRepository;
-  }
 
   async createUser(user: User): Promise<User> {
     try {

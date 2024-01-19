@@ -9,6 +9,7 @@ import logger from '@/app/src/shared/utilities/logger';
 import { Container } from 'typedi';
 import { ConfigService } from '@/app/src/shared/services/ConfigService';
 import errorHandlingMiddleware from '@/app/src/shared/middleware/errorHandling';
+import dbConnectionMiddleware from '@/app/src/shared/middleware/dbConnectionMiddleware';
 
 setupDependencies();
 
@@ -25,6 +26,7 @@ const baseHandler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent) 
 
 const handler = middy(baseHandler)
   .use(jsonBodyParser())
+  .use(dbConnectionMiddleware)
   .use(errorHandlingMiddleware)
   .use(dynamicValidator(baseHandler));
 

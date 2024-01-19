@@ -1,11 +1,10 @@
-// infrastructure/db/connect.ts
-
 import mongoose from 'mongoose';
 import { ConfigService } from '@/app/src/shared/services/ConfigService';
 import { Inject, Service } from 'typedi';
+import logger from '@/app/src/shared/utilities/logger';
 @Service()
 export class DatabaseConnection {
-  @Inject()
+  @Inject('CONFIG_SERVICE')
   private configService: ConfigService;
 
   public async connect() {
@@ -13,13 +12,14 @@ export class DatabaseConnection {
 
     try {
       await mongoose.connect(dbURI, {});
-      console.log('Successfully connected to the database');
+      logger.info('Database connected.');
     } catch (error) {
-      console.log('Error connecting to the database: ', error);
+      logger.error('Error connecting to the database: ', error);
     }
   }
 
   public async disconnect() {
     await mongoose.connection.close();
+    logger.info('Database disconnected.');
   }
 }

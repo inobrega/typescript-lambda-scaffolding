@@ -6,17 +6,28 @@ import { CreateUser } from '@/app/src/application/use_cases/CreateUser';
 import { GetUser } from '@/app/src/application/use_cases/GetUser';
 import { UpdateUser } from '@/app/src/application/use_cases/UpdateUser';
 import { DeleteUser } from '@/app/src/application/use_cases/DeleteUser';
+import { ConfigService } from '@/app/src/shared/services/ConfigService';
+import { FeatureFlagService } from '@/app/src/shared/services/FeatureFlagsService';
+import { DatabaseConnection } from '@/app/src/infrastructure/db/DatabaseConnection';
 
 export const setupDependencies = (): void => {
 
-  Container.set(UserRepository, new UserRepository());
+  //Repos
+  Container.set('USER_REPOSITORY', new UserRepository());
 
-  Container.set(UserService, new UserService(Container.get(UserRepository)));
+  //Services
+  Container.set('USER_SERVICE', new UserService());
+  Container.set('CONFIG_SERVICE', new ConfigService());
+  Container.set('FEATURE_FLAG_SERVICE', new FeatureFlagService());
 
-  Container.set(CreateUser, new CreateUser(Container.get(UserService)));
-  Container.set(GetUser, new GetUser(Container.get(UserService)));
-  Container.set(UpdateUser, new UpdateUser(Container.get(UserService)));
-  Container.set(DeleteUser, new DeleteUser(Container.get(UserService)));
+  // UseCases
+  Container.set(CreateUser, new CreateUser());
+  Container.set(GetUser, new GetUser());
+  Container.set(UpdateUser, new UpdateUser());
+  Container.set(DeleteUser, new DeleteUser());
+
+  // Database
+  Container.set(DatabaseConnection, new DatabaseConnection());
 };
 
 export default setupDependencies;

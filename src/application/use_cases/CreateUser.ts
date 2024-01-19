@@ -6,11 +6,11 @@ import { FeatureFlagService } from '@/app/src/shared/services/FeatureFlagsServic
 import { ConfigService } from '@/app/src/shared/services/ConfigService';
 import FeatureNotEnabledException from '@/app/src/shared/exceptions/FeatureNotEnabledException';
 class CreateUser {
-  @Inject()
+  @Inject('USER_SERVICE')
   private userService: IUserService;
-  @Inject()
+  @Inject('CONFIG_SERVICE')
   private configService: ConfigService;
-  @Inject()
+  @Inject('FEATURE_FLAG_SERVICE')
   private featureFlagService: FeatureFlagService;
 
   async execute(user: User): Promise<User> {
