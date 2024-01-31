@@ -26,7 +26,8 @@ export const routeRequest = async (event: APIGatewayProxyEvent): Promise<APIGate
     const getUser = Container.get(GetUser);
     return {
       statusCode: 200,
-      body: JSON.stringify(await getUser.byId(userId)),
+      // body: JSON.stringify(await getUser.byId(userId)),
+      body: JSON.stringify({ teste: true }),
     };
   }
 
