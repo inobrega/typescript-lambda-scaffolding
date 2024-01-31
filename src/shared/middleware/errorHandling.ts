@@ -16,7 +16,7 @@ const errorHandlingMiddleware: MiddlewareObj = {
     } else {
       response.statusCode = 500;
     }
-    response.body = JSON.stringify({ message: error.message || 'Erro interno do servidor' });
+    response.body = JSON.stringify({ message: error!.message || 'Erro interno do servidor' });
   }
 };
 

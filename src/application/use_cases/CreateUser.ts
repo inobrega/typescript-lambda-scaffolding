@@ -7,11 +7,11 @@ import { ConfigService } from '@/app/src/shared/services/ConfigService';
 import FeatureNotEnabledException from '@/app/src/shared/exceptions/FeatureNotEnabledException';
 class CreateUser {
   @Inject('USER_SERVICE')
-  private userService: IUserService;
+  private userService!: IUserService;
   @Inject('CONFIG_SERVICE')
-  private configService: ConfigService;
+  private configService!: ConfigService;
   @Inject('FEATURE_FLAG_SERVICE')
-  private featureFlagService: FeatureFlagService;
+  private featureFlagService!: FeatureFlagService;
 
   async execute(user: User): Promise<User> {
     logger.info('Creating user', user);

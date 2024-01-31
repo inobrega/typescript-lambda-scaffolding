@@ -3,7 +3,7 @@ import { Inject } from 'typedi';
 
 class GetUser {
   @Inject('USER_SERVICE')
-  private userService: IUserService;
+  private userService!: IUserService;
 
   async byEmail(email: string) {
     return this.userService.getUserByEmail(email);

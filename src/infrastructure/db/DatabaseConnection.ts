@@ -5,7 +5,7 @@ import logger from '@/app/src/shared/utilities/logger';
 @Service()
 export class DatabaseConnection {
   @Inject('CONFIG_SERVICE')
-  private configService: ConfigService;
+  private configService!: ConfigService;
 
   public async connect() {
     const dbURI = this.configService.get('database').uri;

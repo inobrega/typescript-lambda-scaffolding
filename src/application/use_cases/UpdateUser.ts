@@ -4,7 +4,7 @@ import { Inject } from 'typedi';
 
 class UpdateUser {
   @Inject('USER_SERVICE')
-  private userService: IUserService;
+  private userService!: IUserService;
 
   async execute(id: string, user: User) {
     return this.userService.updateUser(id, user);

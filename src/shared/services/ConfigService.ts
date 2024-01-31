@@ -9,7 +9,7 @@ export class ConfigService {
     uri: process.env.DATABASE_URI || 'mongodb://localhost:27017/app',
   };
 
-  private tenant: string;
+  private tenant!: string;
 
   get(param: string) {
     return (this as any)[param];

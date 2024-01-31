@@ -7,9 +7,9 @@ import { Inject, Service } from 'typedi';
 @Service()
 class UserService {
   @Inject('USER_REPOSITORY')
-  private userRepository: IUserRepository;
+  private userRepository!: IUserRepository;
 
-  async createUser(user: User): Promise<User> {
+  async createUser(user: User): Promise<User|undefined> {
     try {
       return this.userRepository.create(user);
     } catch (err) {
@@ -17,7 +17,7 @@ class UserService {
     }
   }
 
-  async getUserByEmail(email: string): Promise<User | null> {
+  async getUserByEmail(email: string): Promise<User | null | void> {
     try {
       return this.userRepository.findByEmail(email);
     } catch (err) {
@@ -33,7 +33,7 @@ class UserService {
     return user;
   }
 
-  async updateUser(id: string, user: User): Promise<User | null> {
+  async updateUser(id: string, user: User): Promise<User | null | void> {
     try {
       return this.userRepository.update(id, user);
     } catch (err) {

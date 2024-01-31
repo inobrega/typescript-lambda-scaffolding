@@ -7,8 +7,9 @@ import { DeleteUser } from '@/app/src/application/use_cases/DeleteUser';
 import logger from '@/app/src/shared/utilities/logger';
 
 export const routeRequest = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const { httpMethod, path } = event;
-  const userId = path.split('/').pop();
+  const { httpMethod, path, body } = event;
+  const userId = path.split('/').pop() as string;
+  const eventBody = (body) ? JSON.parse(body) : '';
 
   logger.info('Received request: ', { path: event.path, method: event.httpMethod });
 
@@ -17,7 +18,7 @@ export const routeRequest = async (event: APIGatewayProxyEvent): Promise<APIGate
     const createUser = Container.get(CreateUser);
     return {
       statusCode: 201,
-      body: JSON.stringify(await createUser.execute(JSON.parse(event.body))),
+      body: JSON.stringify(await createUser.execute(JSON.parse(eventBody))),
     };
   }
 
@@ -33,7 +34,7 @@ export const routeRequest = async (event: APIGatewayProxyEvent): Promise<APIGate
     const updateUser = Container.get(UpdateUser);
     return {
       statusCode: 200,
-      body: JSON.stringify(await updateUser.execute(userId, JSON.parse(event.body))),
+      body: JSON.stringify(await updateUser.execute(userId, JSON.parse(eventBody))),
     };
   }
 

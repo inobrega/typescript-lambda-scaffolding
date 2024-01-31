@@ -17,9 +17,15 @@ const setTenant = (event: APIGatewayProxyEvent): void => {
   Container.get(ConfigService).set('tenant', tenant);
 };
 
+const setHttpMethod = (event: APIGatewayProxyEvent): void => {
+  const httpMethod = event.httpMethod;
+  Container.get(ConfigService).set('httpMethod', httpMethod);
+};
+
 const baseHandler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent) => {
   logger.info('Handler invoked', { path: event.path, method: event.httpMethod });
   setTenant(event);
+  setHttpMethod(event);
   return routeRequest(event);
 };
 
