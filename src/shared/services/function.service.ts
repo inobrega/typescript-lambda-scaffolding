@@ -8,6 +8,6 @@ export class FunctionService {
   private readonly routerService: RouterService;
   async dispatch(event: LambdaFunctionURLEvent): Promise<any> {
     // TODO Add some logic here, like FeatureFlag
-    return this.routerService.routerInception(event);
+    return this.routerService.handleRequest(event);
   }
 }

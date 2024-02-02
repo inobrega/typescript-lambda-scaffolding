@@ -16,51 +16,68 @@ export class RouterService {
   private readonly patchUseCase: PatchUseCase;
   @Inject()
   private readonly deleteUseCase: DeleteUseCase;
-  async routerInception(event: LambdaFunctionURLEvent): Promise<any> {
+
+  private async handleUseCase(
+    useCase: any,
+    data: any,
+    message: string,
+    statusCode: number,
+  ) {
+    return {
+      statusCode,
+      message,
+      body: JSON.stringify(await useCase.execute(data)),
+    };
+  }
+
+  async handleRequest(event: LambdaFunctionURLEvent): Promise<any> {
     const { method: httpMethod } = event.requestContext.http;
     const data = {
       body: JSON.parse(event.body),
       ...event.queryStringParameters,
     };
 
+    let result: any;
+
     switch (httpMethod) {
-      case 'POST': {
-        return {
-          statusCode: 201,
-          message: 'Data has been created successfully.',
-          body: JSON.stringify(await this.createUseCase.execute(data)),
-        };
-      }
-
-      case 'GET': {
-        return {
-          statusCode: 200,
-          message: 'Data has been retrieved successfully.',
-          body: JSON.stringify(await this.getUseCase.execute(data)),
-        };
-      }
-
-      case 'PUT': {
-        return {
-          statusCode: 200,
-          message: 'Data has been updated successfully.',
-          body: JSON.stringify(await this.patchUseCase.execute(data)),
-        };
-      }
-
-      case 'DELETE': {
+      case 'POST':
+        result = this.handleUseCase(
+          this.createUseCase,
+          data,
+          'Data has been created successfully.',
+          201,
+        );
+        break;
+      case 'GET':
+        result = this.handleUseCase(
+          this.getUseCase,
+          data,
+          'Data has been retrieved successfully.',
+          200,
+        );
+        break;
+      case 'PUT':
+        result = this.handleUseCase(
+          this.patchUseCase,
+          data,
+          'Data has been updated successfully.',
+          200,
+        );
+        break;
+      case 'DELETE':
         await this.deleteUseCase.execute(data);
-        return {
+        result = {
           statusCode: 204,
           message: 'Data has been removed successfully.',
           body: '',
         };
-      }
-
+        break;
       default:
         throw new HttpException('Method Not Allowed', 405, {
           error: true,
         });
     }
+
+    return result;
   }
 }
