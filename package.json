@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "lambda": "./build.sh",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -24,8 +25,10 @@
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
     "aws-lambda": "^1.0.7",
+    "nest-winston": "^1.9.4",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
