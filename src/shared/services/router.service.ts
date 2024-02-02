@@ -1,10 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { LambdaFunctionURLEvent } from 'aws-lambda';
-import { CreateUseCase } from '@/app/src/application/use-case/create.use-case';
-import { GetUseCase } from '@/app/src/application/use-case/get.use-case';
-import { PatchUseCase } from '@/app/src/application/use-case/patch.use-case';
-import { DeleteUseCase } from '@/app/src/application/use-case/delete.use-case';
+import { CreateUseCase } from '@/app/src/application/use-cases/create.use-case';
+import { GetUseCase } from '@/app/src/application/use-cases/get.use-case';
+import { PatchUseCase } from '@/app/src/application/use-cases/patch.use-case';
+import { DeleteUseCase } from '@/app/src/application/use-cases/delete.use-case';
 import HttpException from '@/app/src/shared/exceptions/HttpException';
+import { IDataEventParam } from '@/app/src/application/interfaces/IDataEventParam';
+import { IUseCase } from '@/app/src/application/interfaces/IUseCase';
 
 @Injectable()
 export class RouterService {
@@ -18,8 +20,8 @@ export class RouterService {
   private readonly deleteUseCase: DeleteUseCase;
 
   private async handleUseCase(
-    useCase: any,
-    data: any,
+    useCase: IUseCase,
+    data: IDataEventParam,
     message: string,
     statusCode: number,
   ) {
@@ -32,9 +34,9 @@ export class RouterService {
 
   async handleRequest(event: LambdaFunctionURLEvent): Promise<any> {
     const { method: httpMethod } = event.requestContext.http;
-    const data = {
+    const data: IDataEventParam = {
       body: JSON.parse(event.body),
-      ...event.queryStringParameters,
+      query: event.queryStringParameters,
     };
 
     let result: any;
