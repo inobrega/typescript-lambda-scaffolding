@@ -1,19 +1,25 @@
 module.exports = {
-  parser: '@typescript-eslint/parser', // Define o parser do ESLint para TypeScript
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended' // Regras recomendadas do TypeScript
-  ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2020, // Permite a análise de recursos modernos do ECMAScript
-    sourceType: 'module'
+    project: 'tsconfig.json',
+    tsconfigRootDir: __dirname,
+    sourceType: 'module',
   },
+  plugins: ['@typescript-eslint/eslint-plugin'],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+  ],
+  root: true,
+  env: {
+    node: true,
+    jest: true,
+  },
+  ignorePatterns: ['.eslintrc.js'],
   rules: {
-    // Suas regras personalizadas
-    'indent': ['error', 2],
-    'linebreak-style': ['error', 'unix'],
-    'quotes': ['error', 'single'],
-    'semi': ['error', 'always'],
-    'object-curly-spacing': ['error', 'always']
-  }
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+  },
 };
